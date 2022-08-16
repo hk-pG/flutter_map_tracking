@@ -37,6 +37,7 @@ dependencies:
   flutter_map: ^2.2.0
   location: ^4.4.0
   flutter_map_location_marker: ^4.1.4
+  latlong2: ^0.8.1
   # latlong2: ^0.8.1
 
 dev_dependencies:
