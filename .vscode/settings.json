@@ -2,6 +2,6 @@
   "workbench.colorTheme": "Winter is Coming (Dark Blue)",
   "dart.previewFlutterUiGuides": true,
   "editor.suggest.showIcons": true,
-  "cSpell.words": ["latlong"],
+  "cSpell.words": ["appbar", "Geolocator", "latlong"],
   "java.configuration.updateBuildConfiguration": "automatic"
 }
