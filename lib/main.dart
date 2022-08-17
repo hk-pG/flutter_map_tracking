@@ -44,13 +44,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  double latitude = 0.0;
-  double longitude = 0.0;
+  static const double maxZoom = 18.0;
+  static const double minZoom = 1.0;
+  late double latitude;
+  late double longitude;
+  bool isGetLocation = false;
+  bool isServiceEnabled = false;
+  PermissionStatus isPermissionGranted = PermissionStatus.denied;
 
   void _getCurrentLocation() async {
     Location location = Location();
-    bool isServiceEnabled = false;
-    PermissionStatus isPermissionGranted = PermissionStatus.denied;
     isServiceEnabled = await location.serviceEnabled();
     if (!isServiceEnabled) {
       // request permission
@@ -83,6 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
         latitude = res.latitude ?? 0;
         longitude = res.longitude ?? 0;
       });
+      isGetLocation = true;
       print('latitude: $latitude, longitude: $longitude');
     });
   }
@@ -90,14 +94,16 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    // _getCurrentLocation();
+    _getCurrentLocation();
     print("initState() called");
   }
 
   @override
   Widget build(BuildContext context) {
-    _getCurrentLocation();
-    sleep(const Duration(seconds: 1));
+    // 現在地が取得できていない場合は、ロード画面を表示する
+    if (!isGetLocation) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -110,9 +116,9 @@ class _MyHomePageState extends State<MyHomePage> {
         child: FlutterMap(
           options: MapOptions(
             center: LatLng(latitude, longitude),
-            zoom: 5.0,
-            maxZoom: 18.0,
-            minZoom: 1.0,
+            zoom: maxZoom,
+            maxZoom: maxZoom,
+            minZoom: minZoom,
           ),
           layers: [
             // TileLayerOptions(
